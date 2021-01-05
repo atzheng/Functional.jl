@@ -20,7 +20,7 @@ vectorize(f) = l -> map(f, l)
 
 # Utility functions
 constant(x) = (args...; kwargs...) -> x
-getter(k) = coll -> getindex(coll, k, default)
+getter(k) = coll -> getindex(coll, k)
 getter(k, default) = coll -> get(coll, k, default)
 complement(f) = x -> !f(x)
 
