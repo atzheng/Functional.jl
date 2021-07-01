@@ -5,7 +5,7 @@ using Lazy
 export constant, getter, complement, relates, equals, isin,
     partial, rpartial, apply, juxt, compose, rcompose, vectorize,
     apply_keys, map_keys, filter_keys, select_keys, omit_keys,
-    apply_values, map_values, filter_values, take_indices
+    apply_values, map_values, filter_values, take_indices, splat
 
 # Functors
 partial(f, args...; kwargs...) =
@@ -16,11 +16,13 @@ apply(f, args...; kwargs...) = f(args...; kwargs...)
 juxt(fs...) = (args...; kwargs...) -> map(rpartial(apply, args...; kwargs...), fs)
 compose(fs...) = x -> reduce(apply, fs; init=x)
 rcompose(fs...) = compose(reverse(fs))
+splat(f) = xs -> f(xs...)
 vectorize(f) = l -> map(f, l)
 
 # Utility functions
 constant(x) = (args...; kwargs...) -> x
-getter(k) = coll -> getindex(coll, k)
+getfielder(k) = coll -> getfield(coll, k)
+getindexer(k) = rpartial(getindex, k)
 getter(k, default) = coll -> get(coll, k, default)
 complement(f) = x -> !f(x)
 
